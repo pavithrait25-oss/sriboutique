@@ -1,0 +1,1220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sri Boutique | Admin Panel & Saree Manager (Hosur)</title>
+  <link rel="icon" type="image/jpeg" href="assets/images/logo.jpg" />
+  <link rel="stylesheet" href="css/style.css" />
+  <style>
+    .admin-wrapper {
+      background: #F5ECE0;
+      min-height: 100vh;
+      padding: 2rem 1rem 5rem;
+    }
+    .admin-container {
+      max-width: 1240px;
+      margin: 0 auto;
+    }
+    .admin-header-card {
+      background: white;
+      border: 1px solid var(--accent-gold);
+      border-radius: var(--radius-lg);
+      padding: 1.5rem 2rem;
+      margin-bottom: 1.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1.25rem;
+      box-shadow: var(--shadow-sm);
+    }
+    .admin-title-area h1 {
+      font-family: var(--font-serif);
+      font-size: 1.85rem;
+      color: var(--primary-maroon-dark);
+      line-height: 1.2;
+    }
+    .admin-title-area p {
+      color: var(--text-muted);
+      font-size: 0.88rem;
+      margin-top: 3px;
+    }
+    .admin-actions {
+      display: flex;
+      gap: 0.65rem;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    .admin-user-pill {
+      background: var(--bg-cream-alt);
+      border: 1px solid var(--accent-gold);
+      color: var(--primary-maroon);
+      padding: 0.55rem 1rem;
+      border-radius: var(--radius-pill);
+      font-size: 0.85rem;
+      font-weight: 700;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+    .btn-admin-logout {
+      background: #FFF1F0;
+      color: #CF1322;
+      border: 1px solid #FFA39E;
+      padding: 0.55rem 1rem;
+      border-radius: var(--radius-pill);
+      font-weight: 700;
+      font-size: 0.85rem;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      transition: all var(--transition-fast);
+    }
+    .btn-admin-logout:hover {
+      background: #CF1322;
+      color: white;
+    }
+    .btn-admin-pwd {
+      background: white;
+      color: var(--text-main);
+      border: 1px solid var(--border-light);
+      padding: 0.55rem 1rem;
+      border-radius: var(--radius-pill);
+      font-weight: 600;
+      font-size: 0.85rem;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      transition: all var(--transition-fast);
+    }
+    .btn-admin-pwd:hover {
+      border-color: var(--accent-gold);
+      color: var(--primary-maroon);
+    }
+    .btn-add-new {
+      background: #25D366;
+      color: white;
+      border: none;
+      padding: 0.65rem 1.25rem;
+      border-radius: var(--radius-pill);
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.88rem;
+      transition: all var(--transition-fast);
+    }
+    .btn-add-new:hover {
+      background: #20BA5A;
+      transform: translateY(-2px);
+    }
+    .admin-grid-layout {
+      display: grid;
+      grid-template-columns: 1fr 320px;
+      gap: 1.75rem;
+    }
+    @media (max-width: 992px) {
+      .admin-grid-layout {
+        grid-template-columns: 1fr;
+      }
+    }
+    .admin-card {
+      background: white;
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border-light);
+      padding: 1.5rem;
+      box-shadow: var(--shadow-sm);
+    }
+    .admin-table-toolbar {
+      display: flex;
+      justify-content: space-between;
+      gap: 1rem;
+      margin-bottom: 1.25rem;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+    .admin-saree-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.88rem;
+    }
+    .admin-saree-table th {
+      background: var(--bg-cream-alt);
+      padding: 0.85rem;
+      text-align: left;
+      font-weight: 700;
+      color: var(--primary-maroon);
+      border-bottom: 2px solid var(--accent-gold);
+      white-space: nowrap;
+    }
+    .admin-saree-table td {
+      padding: 0.85rem;
+      border-bottom: 1px solid var(--border-light);
+      vertical-align: middle;
+    }
+    .admin-saree-table tr:hover {
+      background: var(--bg-cream-light);
+    }
+    .thumb-cell {
+      width: 60px;
+      height: 75px;
+      border-radius: var(--radius-sm);
+      overflow: hidden;
+      border: 1px solid var(--border-light);
+      background: var(--bg-cream);
+    }
+    .thumb-cell img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .btn-mini-edit {
+      background: var(--primary-maroon-soft);
+      color: var(--primary-maroon);
+      border: 1px solid var(--primary-maroon);
+      padding: 0.35rem 0.75rem;
+      border-radius: var(--radius-sm);
+      font-weight: 600;
+      cursor: pointer;
+      font-size: 0.78rem;
+      margin-right: 0.35rem;
+    }
+    .btn-mini-edit:hover {
+      background: var(--primary-maroon);
+      color: white;
+    }
+    .btn-mini-delete {
+      background: #FFF1F0;
+      color: #CF1322;
+      border: 1px solid #FFA39E;
+      padding: 0.35rem 0.65rem;
+      border-radius: var(--radius-sm);
+      font-weight: 600;
+      cursor: pointer;
+      font-size: 0.78rem;
+    }
+    .btn-mini-delete:hover {
+      background: #CF1322;
+      color: white;
+    }
+    .admin-sidebar-box {
+      background: white;
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border-light);
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      box-shadow: var(--shadow-sm);
+    }
+    .admin-sidebar-box h3 {
+      font-size: 1.1rem;
+      color: var(--primary-maroon);
+      margin-bottom: 0.75rem;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+    /* Modals */
+    .admin-modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.65);
+      backdrop-filter: blur(4px);
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity var(--transition-normal);
+    }
+    .admin-modal.open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .admin-modal-card {
+      background: white;
+      width: 100%;
+      max-width: 650px;
+      border-radius: var(--radius-lg);
+      border: 2px solid var(--accent-gold);
+      padding: 2rem;
+      max-height: 90vh;
+      overflow-y: auto;
+      box-shadow: var(--shadow-lg);
+    }
+    .modal-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+      border-bottom: 1px solid var(--border-light);
+      padding-bottom: 0.75rem;
+    }
+    .modal-head h2 {
+      font-family: var(--font-serif);
+      color: var(--primary-maroon);
+    }
+    .stat-badge {
+      background: var(--bg-cream-alt);
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-md);
+      padding: 1rem;
+      text-align: center;
+    }
+    .stat-badge .val {
+      font-size: 1.6rem;
+      font-weight: 800;
+      color: var(--primary-maroon);
+    }
+    .stat-badge .lbl {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+  </style>
+</head>
+<body class="admin-wrapper">
+
+  <!-- ===================================================================
+       1. ADMIN LOGIN VIEW (Displayed when user is not authenticated)
+       =================================================================== -->
+  <div id="admin-login-view" class="admin-login-overlay">
+    <div class="admin-login-card">
+      <img src="assets/images/logo.jpg" alt="Sri Boutique Logo" class="admin-login-logo" />
+      <h2>Sri Boutique Admin</h2>
+      <p class="admin-login-subtitle">Hosur, Tamil Nadu • Saree Manager</p>
+
+      <div class="admin-creds-hint">
+        <strong>🔐 Default Login Credentials:</strong><br/>
+        Username: <code>admin</code> &bull; Password: <code>sriboutique123</code>
+      </div>
+
+      <div id="login-error-alert" style="display:none; background:#FFF1F0; border:1px solid #FFA39E; color:#CF1322; padding:0.65rem; border-radius:6px; font-size:0.85rem; margin-bottom:1rem; font-weight:600;">
+        ⚠️ Invalid username or password. Please try again.
+      </div>
+
+      <form id="admin-login-form" onsubmit="handleAdminLogin(event)">
+        <div class="form-group" style="text-align:left; margin-bottom:1rem;">
+          <label style="font-weight:600; font-size:0.85rem; color:var(--text-main);">Username *</label>
+          <div style="position:relative;">
+            <span style="position:absolute; left:12px; top:50%; transform:translateY(-50%); font-size:1rem; color:var(--text-light);">👤</span>
+            <input type="text" id="login-username" class="form-control" style="padding-left:2.5rem;" placeholder="e.g. admin" required autocomplete="username" />
+          </div>
+        </div>
+
+        <div class="form-group" style="text-align:left; margin-bottom:1.25rem;">
+          <label style="font-weight:600; font-size:0.85rem; color:var(--text-main);">Password *</label>
+          <div style="position:relative;">
+            <span style="position:absolute; left:12px; top:50%; transform:translateY(-50%); font-size:1rem; color:var(--text-light);">🔒</span>
+            <input type="password" id="login-password" class="form-control" style="padding-left:2.5rem; padding-right:2.5rem;" placeholder="Enter admin password" required autocomplete="current-password" />
+            <button type="button" onclick="togglePasswordVisibility('login-password', this)" style="position:absolute; right:10px; top:50%; transform:translateY(-50%); background:none; border:none; cursor:pointer; color:var(--text-muted); font-size:0.95rem;">👁️</button>
+          </div>
+        </div>
+
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1.5rem; font-size:0.82rem; color:var(--text-muted);">
+          <label style="display:inline-flex; align-items:center; gap:0.4rem; cursor:pointer;">
+            <input type="checkbox" id="login-remember-me" checked />
+            Remember me on this device
+          </label>
+        </div>
+
+        <button type="submit" class="btn-primary" style="width:100%; justify-content:center; padding:0.85rem;">
+          <span>🔐</span> Sign In to Admin Panel
+        </button>
+      </form>
+
+      <div style="margin-top:1.5rem; border-top:1px dashed var(--border-light); padding-top:1rem;">
+        <a href="index.html" style="font-size:0.85rem; color:var(--primary-maroon); font-weight:600; display:inline-flex; align-items:center; gap:0.4rem;">
+          <span>←</span> Return to Sri Boutique Live Store
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================================================================
+       2. ADMIN DASHBOARD VIEW (Displayed when authenticated)
+       =================================================================== -->
+  <div id="admin-dashboard-view" class="admin-container" style="display: none;">
+    <!-- Top Header -->
+    <div class="admin-header-card">
+      <div style="display: flex; align-items: center; gap: 1.15rem;">
+        <img src="assets/images/logo.jpg" alt="Sri Boutique Logo" class="brand-logo-img" style="width: 66px; height: 66px; border: 2.5px solid var(--accent-gold);" />
+        <div class="admin-title-area">
+          <h1>Sri Boutique Admin Panel</h1>
+          <p>Hosur, Tamil Nadu — Saree Inventory & Customer Feedback Manager</p>
+        </div>
+      </div>
+      <div class="admin-actions">
+        <div class="admin-user-pill">
+          <span>👤</span> <span id="admin-display-username">Admin</span>
+        </div>
+        <button class="btn-admin-pwd" onclick="openChangePasswordModal()" title="Update login password">
+          <span>🔑</span> Change Password
+        </button>
+        <button class="btn-admin-logout" onclick="handleAdminLogout()">
+          <span>🚪</span> Logout
+        </button>
+        <a href="index.html" class="btn-secondary" style="padding: 0.55rem 1rem; font-size: 0.85rem;" target="_blank">
+          <span>🌐</span> View Store
+        </a>
+      </div>
+    </div>
+
+    <!-- Admin Navigation Tabs -->
+    <div class="admin-tab-nav">
+      <button class="admin-tab-btn active" id="tab-btn-inventory" onclick="switchAdminTab('inventory')">
+        <span>👗</span> Saree Inventory Catalog
+      </button>
+      <button class="admin-tab-btn" id="tab-btn-feedback" onclick="switchAdminTab('feedback')">
+        <span>⭐</span> Customer Feedback & Reviews
+      </button>
+    </div>
+
+    <!-- TAB 1: SAREE INVENTORY -->
+    <div id="admin-section-inventory">
+      <div class="admin-grid-layout">
+        <!-- Left: Saree Table -->
+        <div class="admin-card">
+          <div class="admin-table-toolbar">
+            <div style="flex: 1; min-width: 200px;">
+              <input 
+                type="text" 
+                id="admin-search" 
+                class="form-control" 
+                placeholder="Search by code, saree name or category..." 
+                oninput="renderAdminTable()" 
+              />
+            </div>
+            <div>
+              <select id="admin-cat-filter" class="form-control" onchange="renderAdminTable()">
+                <option value="all">All Categories</option>
+                <option value="kanchipuram">Kanchipuram Silk</option>
+                <option value="banarasi">Banarasi Silk</option>
+                <option value="soft-silk">Soft Silk</option>
+                <option value="cotton">Cotton Sarees</option>
+                <option value="linen">Linen Sarees</option>
+                <option value="printed">Printed Sarees</option>
+                <option value="georgette">Georgette Sarees</option>
+                <option value="chiffon">Chiffon Sarees</option>
+                <option value="designer">Designer Sarees</option>
+                <option value="party-wear">Party Wear</option>
+                <option value="bridal">Bridal Sarees</option>
+              </select>
+            </div>
+            <div>
+              <button class="btn-add-new" onclick="openAddSareeModal()">
+                <span>➕</span> Add Saree
+              </button>
+            </div>
+          </div>
+
+          <div style="margin-bottom: 0.85rem; display: flex; justify-content: space-between; align-items: center;">
+            <span id="admin-count-pill" style="font-weight: 700; color: var(--primary-maroon); font-size: 0.85rem;">
+              0 Sarees
+            </span>
+            <small style="color: var(--text-muted);">Click <strong>Edit</strong> to modify saree photo and price</small>
+          </div>
+
+          <div style="overflow-x: auto;">
+            <table class="admin-saree-table">
+              <thead>
+                <tr>
+                  <th>Photo</th>
+                  <th>Code</th>
+                  <th>Saree Name</th>
+                  <th>Category</th>
+                  <th>Price (₹)</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="admin-saree-tbody">
+                <!-- Injected via JavaScript -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Right: Boutique Sidebar & Actions -->
+        <div>
+          <div class="admin-sidebar-box" style="text-align: center;">
+            <img src="assets/images/logo.jpg" alt="Sri Boutique Logo" style="width: 84px; height: 84px; border-radius: 50%; border: 3px solid var(--accent-gold); margin: 0 auto 0.75rem; display: block; box-shadow: var(--shadow-sm);" />
+            <h3 style="justify-content: center; margin-bottom: 0.2rem;">Sri Boutique</h3>
+            <p style="font-size: 0.82rem; color: var(--accent-gold-dark); font-weight: 700; margin-bottom: 0.85rem; letter-spacing: 0.08em;">HOSUR • TAMIL NADU</p>
+            <div style="font-size: 0.84rem; color: var(--text-muted); line-height: 1.6; margin-bottom: 1.25rem; text-align: left; background: var(--bg-cream); padding: 0.85rem; border-radius: 8px;">
+              <div>📞 <strong>Phone:</strong> +91 9566750694</div>
+              <div>💬 <strong>WhatsApp:</strong> 9566750694</div>
+              <div>⏰ <strong>Hours:</strong> 9:00 AM – 7:00 PM</div>
+            </div>
+            <button class="btn-secondary" style="width: 100%; font-size: 0.82rem;" onclick="resetToOriginal()">
+              ↺ Reset Catalog to Default
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 2: CUSTOMER FEEDBACK & REVIEWS MANAGER -->
+    <div id="admin-section-feedback" style="display: none;">
+      <!-- Stats Row -->
+      <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin-bottom: 1.5rem;">
+        <div class="stat-badge">
+          <div class="val" id="stat-total-reviews">0</div>
+          <div class="lbl">Total Reviews</div>
+        </div>
+        <div class="stat-badge">
+          <div class="val" id="stat-video-reviews">0</div>
+          <div class="lbl">Video Reviews</div>
+        </div>
+        <div class="stat-badge">
+          <div class="val" id="stat-customer-stories">0</div>
+          <div class="lbl">Drape Stories</div>
+        </div>
+        <div class="stat-badge">
+          <div class="val" style="color:#E29500;">4.9 ★</div>
+          <div class="lbl">Avg Rating</div>
+        </div>
+      </div>
+
+      <div class="admin-card">
+        <div class="admin-table-toolbar">
+          <div style="flex: 1; min-width: 220px;">
+            <input 
+              type="text" 
+              id="admin-feedback-search" 
+              class="form-control" 
+              placeholder="Search reviews by customer name, saree or city..." 
+              oninput="renderAdminFeedbackTable()" 
+            />
+          </div>
+          <div>
+            <select id="admin-feedback-type-filter" class="form-control" onchange="renderAdminFeedbackTable()">
+              <option value="all">All Feedback Types</option>
+              <option value="video">📹 Video Reviews</option>
+              <option value="story">📖 Customer Stories</option>
+              <option value="feedback">💬 Customer Feedback</option>
+            </select>
+          </div>
+          <div style="display: flex; gap: 0.5rem;">
+            <button class="btn-add-new" onclick="openAdminAddFeedbackModal()">
+              <span>➕</span> Add Review
+            </button>
+            <button class="btn-secondary" style="font-size: 0.85rem;" onclick="resetFeedbackToOriginal()">
+              ↺ Reset Reviews
+            </button>
+          </div>
+        </div>
+
+        <div style="overflow-x: auto;">
+          <table class="admin-saree-table">
+            <thead>
+              <tr>
+                <th>Type</th>
+                <th>Customer</th>
+                <th>Location</th>
+                <th>Saree Purchased</th>
+                <th>Rating</th>
+                <th>Review Title & Quote</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="admin-feedback-tbody">
+              <!-- Injected via JavaScript -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================================================================
+       MODALS
+       =================================================================== -->
+
+  <!-- Modal 1: Saree Edit / Add Modal -->
+  <div class="admin-modal" id="saree-edit-modal">
+    <div class="admin-modal-card">
+      <div class="modal-head">
+        <h2 id="modal-form-title">Edit Saree Details</h2>
+        <button style="background:none; border:none; font-size:1.5rem; cursor:pointer;" onclick="closeModal()">&times;</button>
+      </div>
+
+      <form id="saree-form" onsubmit="handleFormSubmit(event)">
+        <input type="hidden" id="form-saree-id" />
+
+        <div class="form-group" style="margin-bottom: 1rem;">
+          <label>Product Code *</label>
+          <input type="text" id="form-saree-code" class="form-control" required placeholder="e.g. SB-KAN-101" />
+        </div>
+
+        <div class="form-group" style="margin-bottom: 1rem;">
+          <label>Saree Title / Name *</label>
+          <input type="text" id="form-saree-name" class="form-control" required placeholder="e.g. Royal Purple & Antique Gold Temple Kanchipuram Silk" />
+        </div>
+
+        <div class="form-group" style="margin-bottom: 1rem;">
+          <label>Category *</label>
+          <select id="form-saree-cat" class="form-control" required>
+            <option value="kanchipuram">Kanchipuram Silk</option>
+            <option value="banarasi">Banarasi Silk</option>
+            <option value="soft-silk">Soft Silk</option>
+            <option value="cotton">Cotton Sarees</option>
+            <option value="linen">Linen Sarees</option>
+            <option value="printed">Printed Sarees</option>
+            <option value="georgette">Georgette Sarees</option>
+            <option value="chiffon">Chiffon Sarees</option>
+            <option value="designer">Designer Sarees</option>
+            <option value="party-wear">Party Wear</option>
+            <option value="bridal">Bridal Sarees</option>
+          </select>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
+          <div class="form-group">
+            <label>Offer Price (₹) *</label>
+            <input type="number" id="form-saree-price" class="form-control" required placeholder="e.g. 15800" />
+          </div>
+          <div class="form-group">
+            <label>Original MRP (₹)</label>
+            <input type="number" id="form-saree-mrp" class="form-control" placeholder="e.g. 19999" />
+          </div>
+        </div>
+
+        <!-- Photo URL & File Upload -->
+        <div class="form-group" style="margin-bottom: 1rem;">
+          <label>Saree Photo URL *</label>
+          <input type="text" id="form-saree-image" class="form-control" required placeholder="Paste image web URL..." oninput="updatePreviewImage()" />
+          <small style="color: var(--text-muted); font-size: 0.75rem; margin-top: 3px; display:block;">Or upload photo from device:</small>
+          <input type="file" id="form-saree-file" accept="image/*" class="form-control" style="margin-top: 4px;" onchange="handleFileUpload(event)" />
+        </div>
+
+        <!-- Image Preview -->
+        <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1.25rem; background: var(--bg-cream-alt); padding: 0.75rem; border-radius: 8px;">
+          <div style="width: 70px; height: 90px; border-radius: 6px; overflow: hidden; background: #EEE; border: 1px solid #CCC;">
+            <img id="form-preview-img" src="" alt="Preview" style="width:100%; height:100%; object-fit:cover;" />
+          </div>
+          <div style="font-size: 0.82rem; color: var(--text-muted);">
+            <strong>Photo Preview</strong><br/>
+            Check that the saree image loads cleanly.
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
+          <div class="form-group">
+            <label>Color</label>
+            <input type="text" id="form-saree-color" class="form-control" placeholder="e.g. Royal Purple & Antique Gold" />
+          </div>
+          <div class="form-group">
+            <label>Fabric / Zari</label>
+            <input type="text" id="form-saree-fabric" class="form-control" placeholder="e.g. Pure Mulberry Silk with Temple Zari" />
+          </div>
+        </div>
+
+        <div class="form-group" style="margin-bottom: 1rem;">
+          <label>Badge / Highlight Tag</label>
+          <input type="text" id="form-saree-badge" class="form-control" placeholder="e.g. Bestseller, Pure Zari, Handloom" />
+        </div>
+
+        <div class="form-group" style="margin-bottom: 1.5rem;">
+          <label>Description</label>
+          <textarea id="form-saree-desc" class="form-control" rows="2" placeholder="Brief description of weave, pallu and border..."></textarea>
+        </div>
+
+        <div style="display: flex; justify-content: flex-end; gap: 0.75rem;">
+          <button type="button" class="btn-secondary" onclick="closeModal()">Cancel</button>
+          <button type="submit" class="btn-primary">Save Changes</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal 2: Admin Add / Edit Review Modal -->
+  <div class="admin-modal" id="admin-feedback-modal">
+    <div class="admin-modal-card">
+      <div class="modal-head">
+        <h2 id="modal-feedback-title">Add Customer Feedback / Video Story</h2>
+        <button style="background:none; border:none; font-size:1.5rem; cursor:pointer;" onclick="closeAdminFeedbackModal()">&times;</button>
+      </div>
+
+      <form id="admin-feedback-form" onsubmit="handleAdminAddFeedbackSubmit(event)">
+        <div class="form-group" style="margin-bottom: 1rem;">
+          <label>Review Type *</label>
+          <select id="afb-type" class="form-control" onchange="toggleAdminFeedbackFields()" required>
+            <option value="feedback">💬 Customer Feedback Review</option>
+            <option value="video">📹 Video Review</option>
+            <option value="story">📖 Customer Drape Story</option>
+          </select>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
+          <div class="form-group">
+            <label>Customer Name *</label>
+            <input type="text" id="afb-name" class="form-control" placeholder="e.g. Meenakshi Sundaram" required />
+          </div>
+          <div class="form-group">
+            <label>City / Location *</label>
+            <input type="text" id="afb-location" class="form-control" placeholder="e.g. Hosur, Tamil Nadu" required />
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 1rem; margin-bottom: 1rem;">
+          <div class="form-group">
+            <label>Saree Purchased *</label>
+            <input type="text" id="afb-saree" class="form-control" placeholder="e.g. Kanchipuram Pure Silk (SB-KAN-101)" required />
+          </div>
+          <div class="form-group">
+            <label>Star Rating (1 - 5) *</label>
+            <select id="afb-rating" class="form-control">
+              <option value="5">⭐⭐⭐⭐⭐ (5 Stars)</option>
+              <option value="4">⭐⭐⭐⭐ (4 Stars)</option>
+              <option value="3">⭐⭐⭐ (3 Stars)</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Video Fields -->
+        <div id="afb-video-fields" style="display:none; background:#FFF8F8; border:1px dashed var(--accent-gold); padding:0.85rem; border-radius:6px; margin-bottom:1rem;">
+          <div class="form-group">
+            <label>YouTube Link or MP4 URL *</label>
+            <input type="url" id="afb-video-url" class="form-control" placeholder="e.g. https://www.youtube.com/watch?v=... or .mp4" />
+          </div>
+        </div>
+
+        <!-- Story Fields -->
+        <div id="afb-story-fields" style="display:none; background:#FFFDF9; border:1px dashed var(--accent-gold); padding:0.85rem; border-radius:6px; margin-bottom:1rem;">
+          <div class="form-group" style="margin-bottom:0.75rem;">
+            <label>Occasion / Event</label>
+            <input type="text" id="afb-occasion" class="form-control" placeholder="e.g. Wedding Muhurtham, Temple Visit" />
+          </div>
+          <div class="form-group">
+            <label>Drape Photo URL</label>
+            <input type="text" id="afb-photo-url" class="form-control" placeholder="Photo URL or assets/images/hero-saree.jpg" />
+          </div>
+        </div>
+
+        <div class="form-group" style="margin-bottom: 1rem;">
+          <label>Review Headline *</label>
+          <input type="text" id="afb-title" class="form-control" placeholder="e.g. Mesmerized by the authentic Kanchi silk quality!" required />
+        </div>
+
+        <div class="form-group" style="margin-bottom: 1.5rem;">
+          <label>Review Details / Quote *</label>
+          <textarea id="afb-quote" class="form-control" rows="3" placeholder="Customer experience and praise for saree and service..." required></textarea>
+        </div>
+
+        <div style="display: flex; justify-content: flex-end; gap: 0.75rem;">
+          <button type="button" class="btn-secondary" onclick="closeAdminFeedbackModal()">Cancel</button>
+          <button type="submit" class="btn-primary">Save Review</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal 3: Change Password Modal -->
+  <div class="admin-modal" id="change-password-modal">
+    <div class="admin-modal-card" style="max-width: 460px;">
+      <div class="modal-head">
+        <h2>Change Admin Password</h2>
+        <button style="background:none; border:none; font-size:1.5rem; cursor:pointer;" onclick="closeChangePasswordModal()">&times;</button>
+      </div>
+
+      <div id="pwd-change-error" style="display:none; background:#FFF1F0; border:1px solid #FFA39E; color:#CF1322; padding:0.6rem; border-radius:6px; font-size:0.85rem; margin-bottom:1rem; font-weight:600;"></div>
+
+      <form id="change-pwd-form" onsubmit="handlePasswordChange(event)">
+        <div class="form-group" style="margin-bottom: 1rem;">
+          <label>Current Password *</label>
+          <input type="password" id="pwd-current" class="form-control" required placeholder="Enter current password" />
+        </div>
+        <div class="form-group" style="margin-bottom: 1rem;">
+          <label>New Username (Optional)</label>
+          <input type="text" id="pwd-new-username" class="form-control" placeholder="Leave blank to keep current username" />
+        </div>
+        <div class="form-group" style="margin-bottom: 1rem;">
+          <label>New Password *</label>
+          <input type="password" id="pwd-new-password" class="form-control" required placeholder="Enter new password" />
+        </div>
+        <div class="form-group" style="margin-bottom: 1.5rem;">
+          <label>Confirm New Password *</label>
+          <input type="password" id="pwd-confirm-password" class="form-control" required placeholder="Re-enter new password" />
+        </div>
+
+        <div style="display: flex; justify-content: flex-end; gap: 0.75rem;">
+          <button type="button" class="btn-secondary" onclick="closeChangePasswordModal()">Cancel</button>
+          <button type="submit" class="btn-primary">Update Password</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="js/products.js"></script>
+  <script>
+    let adminProducts = [];
+    let adminFeedbacks = [];
+
+    // Check Authentication on Page Load
+    document.addEventListener('DOMContentLoaded', () => {
+      checkAdminAuth();
+    });
+
+    function checkAdminAuth() {
+      const isAuth = sessionStorage.getItem('sri_boutique_admin_auth') === 'true' || 
+                     localStorage.getItem('sri_boutique_admin_auth') === 'true';
+
+      const loginView = document.getElementById('admin-login-view');
+      const dashView = document.getElementById('admin-dashboard-view');
+
+      if (isAuth) {
+        loginView.style.display = 'none';
+        dashView.style.display = 'block';
+
+        const creds = getAdminCredentials();
+        const displayUser = document.getElementById('admin-display-username');
+        if (displayUser) displayUser.textContent = creds.username;
+
+        adminProducts = getStoredProducts();
+        adminFeedbacks = getStoredFeedback();
+        renderAdminTable();
+        renderAdminFeedbackTable();
+      } else {
+        loginView.style.display = 'flex';
+        dashView.style.display = 'none';
+      }
+    }
+
+    // Login Handler
+    function handleAdminLogin(e) {
+      e.preventDefault();
+      const user = document.getElementById('login-username').value.trim();
+      const pass = document.getElementById('login-password').value.trim();
+      const remember = document.getElementById('login-remember-me').checked;
+      const errorAlert = document.getElementById('login-error-alert');
+
+      if (verifyAdminLogin(user, pass)) {
+        if (errorAlert) errorAlert.style.display = 'none';
+        if (remember) {
+          localStorage.setItem('sri_boutique_admin_auth', 'true');
+        } else {
+          sessionStorage.setItem('sri_boutique_admin_auth', 'true');
+        }
+        checkAdminAuth();
+      } else {
+        if (errorAlert) errorAlert.style.display = 'block';
+      }
+    }
+
+    // Logout Handler
+    function handleAdminLogout() {
+      if (confirm('Are you sure you want to log out of Sri Boutique Admin?')) {
+        sessionStorage.removeItem('sri_boutique_admin_auth');
+        localStorage.removeItem('sri_boutique_admin_auth');
+        checkAdminAuth();
+      }
+    }
+
+    // Toggle Password Visibility
+    function togglePasswordVisibility(inputId, btn) {
+      const input = document.getElementById(inputId);
+      if (!input) return;
+      if (input.type === 'password') {
+        input.type = 'text';
+        btn.textContent = '🔒';
+      } else {
+        input.type = 'password';
+        btn.textContent = '👁️';
+      }
+    }
+
+    // Switch Dashboard Tabs (Inventory / Feedback)
+    function switchAdminTab(tab) {
+      const tabInv = document.getElementById('admin-section-inventory');
+      const tabFb = document.getElementById('admin-section-feedback');
+      const btnInv = document.getElementById('tab-btn-inventory');
+      const btnFb = document.getElementById('tab-btn-feedback');
+
+      if (tab === 'inventory') {
+        tabInv.style.display = 'block';
+        tabFb.style.display = 'none';
+        btnInv.classList.add('active');
+        btnFb.classList.remove('active');
+        renderAdminTable();
+      } else {
+        tabInv.style.display = 'none';
+        tabFb.style.display = 'block';
+        btnInv.classList.remove('active');
+        btnFb.classList.add('active');
+        renderAdminFeedbackTable();
+      }
+    }
+
+    // ==========================================
+    // SAREE INVENTORY MANAGEMENT
+    // ==========================================
+    function renderAdminTable() {
+      const tbody = document.getElementById('admin-saree-tbody');
+      const countPill = document.getElementById('admin-count-pill');
+      const query = (document.getElementById('admin-search')?.value || '').toLowerCase().trim();
+      const cat = document.getElementById('admin-cat-filter')?.value || 'all';
+
+      if (!tbody) return;
+
+      let list = [...adminProducts];
+
+      if (cat !== 'all') {
+        list = list.filter(p => p.category === cat);
+      }
+
+      if (query !== '') {
+        list = list.filter(p => 
+          (p.code && p.code.toLowerCase().includes(query)) ||
+          (p.name && p.name.toLowerCase().includes(query)) ||
+          (p.fabric && p.fabric.toLowerCase().includes(query)) ||
+          (p.categoryName && p.categoryName.toLowerCase().includes(query))
+        );
+      }
+
+      if (countPill) countPill.textContent = `${list.length} Sarees`;
+
+      tbody.innerHTML = list.map(item => `
+        <tr>
+          <td>
+            <div class="thumb-cell">
+              <img src="${item.image}" alt="${item.name}" onerror="this.src='assets/images/hero-saree.jpg';" />
+            </div>
+          </td>
+          <td><strong>${item.code}</strong></td>
+          <td>
+            <div style="font-weight: 600; color: var(--primary-maroon);">${item.name}</div>
+            <div style="font-size: 0.75rem; color: var(--text-light);">${item.color || ''}</div>
+          </td>
+          <td><span style="background:var(--bg-cream-alt); padding:3px 8px; border-radius:4px; font-size:0.75rem; font-weight:600;">${item.categoryName || item.category}</span></td>
+          <td style="font-weight: 700; color: #2D6A4F;">₹${Number(item.price).toLocaleString('en-IN')}</td>
+          <td style="white-space:nowrap;">
+            <button class="btn-mini-edit" onclick="openEditModal('${item.id}')">✏️ Edit</button>
+            <button class="btn-mini-delete" onclick="deleteSaree('${item.id}')">🗑️</button>
+          </td>
+        </tr>
+      `).join('');
+    }
+
+    function openEditModal(id) {
+      const item = adminProducts.find(p => p.id === id);
+      if (!item) return;
+
+      document.getElementById('modal-form-title').textContent = 'Edit Saree: ' + item.code;
+      document.getElementById('form-saree-id').value = item.id;
+      document.getElementById('form-saree-code').value = item.code;
+      document.getElementById('form-saree-name').value = item.name;
+      document.getElementById('form-saree-cat').value = item.category;
+      document.getElementById('form-saree-price').value = item.price;
+      document.getElementById('form-saree-mrp').value = item.mrp || '';
+      document.getElementById('form-saree-image').value = item.image;
+      document.getElementById('form-saree-color').value = item.color || '';
+      document.getElementById('form-saree-fabric').value = item.fabric || '';
+      document.getElementById('form-saree-badge').value = item.badge || '';
+      document.getElementById('form-saree-desc').value = item.description || '';
+
+      updatePreviewImage();
+      document.getElementById('saree-edit-modal').classList.add('open');
+    }
+
+    function openAddSareeModal() {
+      document.getElementById('modal-form-title').textContent = 'Add New Saree to Catalog';
+      document.getElementById('form-saree-id').value = '';
+      document.getElementById('saree-form').reset();
+      
+      const newNum = 100 + adminProducts.length + 1;
+      document.getElementById('form-saree-code').value = 'SB-NEW-' + newNum;
+      document.getElementById('form-saree-image').value = 'assets/images/hero-saree.jpg';
+      
+      updatePreviewImage();
+      document.getElementById('saree-edit-modal').classList.add('open');
+    }
+
+    function closeModal() {
+      document.getElementById('saree-edit-modal').classList.remove('open');
+    }
+
+    function updatePreviewImage() {
+      const url = document.getElementById('form-saree-image').value;
+      const img = document.getElementById('form-preview-img');
+      img.src = url || 'assets/images/hero-saree.jpg';
+    }
+
+    function handleFileUpload(e) {
+      const file = e.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = function(evt) {
+        document.getElementById('form-saree-image').value = evt.target.result;
+        updatePreviewImage();
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function handleFormSubmit(e) {
+      e.preventDefault();
+      const id = document.getElementById('form-saree-id').value;
+      const code = document.getElementById('form-saree-code').value.trim();
+      const name = document.getElementById('form-saree-name').value.trim();
+      const cat = document.getElementById('form-saree-cat').value;
+      const price = Number(document.getElementById('form-saree-price').value);
+      const mrp = Number(document.getElementById('form-saree-mrp').value) || Math.round(price * 1.25);
+      const image = document.getElementById('form-saree-image').value.trim();
+      const color = document.getElementById('form-saree-color').value.trim();
+      const fabric = document.getElementById('form-saree-fabric').value.trim();
+      const badge = document.getElementById('form-saree-badge').value.trim();
+      const desc = document.getElementById('form-saree-desc').value.trim();
+
+      const catObj = CATEGORIES.find(c => c.id === cat);
+      const categoryName = catObj ? catObj.name : cat;
+
+      if (id) {
+        const idx = adminProducts.findIndex(p => p.id === id);
+        if (idx > -1) {
+          adminProducts[idx] = {
+            ...adminProducts[idx],
+            code, name, category: cat, categoryName, price, mrp, image, color, fabric, badge, description: desc
+          };
+        }
+      } else {
+        const newId = 'saree-' + Date.now();
+        adminProducts.unshift({
+          id: newId,
+          code, name, category: cat, categoryName, price, mrp, image, color, fabric, badge, description: desc
+        });
+      }
+
+      saveProductsToStorage(adminProducts);
+      renderAdminTable();
+      closeModal();
+      alert('Saree details updated successfully! Your store catalog reflects the new price and photo.');
+    }
+
+    function deleteSaree(id) {
+      const item = adminProducts.find(p => p.id === id);
+      if (!item) return;
+      if (confirm(`Are you sure you want to delete saree ${item.code} (${item.name})?`)) {
+        adminProducts = adminProducts.filter(p => p.id !== id);
+        saveProductsToStorage(adminProducts);
+        renderAdminTable();
+      }
+    }
+
+    function resetToOriginal() {
+      if (confirm('Reset entire catalog back to initial sarees? Any custom sarees will be reset.')) {
+        adminProducts = resetProductsToDefault();
+        renderAdminTable();
+        alert('Catalog reset to initial sarees.');
+      }
+    }
+
+    // ==========================================
+    // CUSTOMER FEEDBACK & REVIEWS MANAGEMENT
+    // ==========================================
+    function renderAdminFeedbackTable() {
+      adminFeedbacks = getStoredFeedback();
+      const tbody = document.getElementById('admin-feedback-tbody');
+      const query = (document.getElementById('admin-feedback-search')?.value || '').toLowerCase().trim();
+      const typeFilter = document.getElementById('admin-feedback-type-filter')?.value || 'all';
+
+      if (!tbody) return;
+
+      // Update stat pills
+      const totalCount = adminFeedbacks.length;
+      const videoCount = adminFeedbacks.filter(f => f.type === 'video').length;
+      const storyCount = adminFeedbacks.filter(f => f.type === 'story').length;
+      document.getElementById('stat-total-reviews').textContent = totalCount;
+      document.getElementById('stat-video-reviews').textContent = videoCount;
+      document.getElementById('stat-customer-stories').textContent = storyCount;
+
+      let list = [...adminFeedbacks];
+      if (typeFilter !== 'all') {
+        list = list.filter(f => (f.type || 'feedback') === typeFilter);
+      }
+      if (query !== '') {
+        list = list.filter(f => 
+          (f.customerName && f.customerName.toLowerCase().includes(query)) ||
+          (f.location && f.location.toLowerCase().includes(query)) ||
+          (f.sareePurchased && f.sareePurchased.toLowerCase().includes(query)) ||
+          (f.title && f.title.toLowerCase().includes(query)) ||
+          (f.quote && f.quote.toLowerCase().includes(query))
+        );
+      }
+
+      if (list.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="7" style="text-align:center; padding:2rem; color:var(--text-muted);">No customer reviews found matching filter.</td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = list.map(item => {
+        let typeBadge = '';
+        if (item.type === 'video') typeBadge = '<span class="feedback-type-pill pill-video">📹 Video</span>';
+        else if (item.type === 'story') typeBadge = '<span class="feedback-type-pill pill-story">📖 Story</span>';
+        else typeBadge = '<span class="feedback-type-pill pill-review">💬 Review</span>';
+
+        const stars = '★'.repeat(item.rating || 5);
+
+        return `
+          <tr>
+            <td>${typeBadge}</td>
+            <td><strong>${escapeHtml(item.customerName)}</strong></td>
+            <td>📍 ${escapeHtml(item.location || 'Hosur')}</td>
+            <td style="color:var(--primary-maroon); font-weight:600;">${escapeHtml(item.sareePurchased || '')}</td>
+            <td style="color:#E29500; font-size:0.95rem;">${stars}</td>
+            <td>
+              <div style="font-weight:600; color:var(--text-main);">${escapeHtml(item.title)}</div>
+              <div style="font-size:0.78rem; color:var(--text-muted); max-width:320px; text-overflow:ellipsis; overflow:hidden; white-space:nowrap;">"${escapeHtml(item.quote)}"</div>
+            </td>
+            <td>
+              <button class="btn-mini-delete" onclick="deleteAdminFeedback('${item.id}')" title="Delete Review">🗑️</button>
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    function deleteAdminFeedback(id) {
+      if (confirm('Are you sure you want to delete this customer review?')) {
+        adminFeedbacks = adminFeedbacks.filter(f => f.id !== id);
+        saveFeedbackToStorage(adminFeedbacks);
+        renderAdminFeedbackTable();
+      }
+    }
+
+    function resetFeedbackToOriginal() {
+      if (confirm('Reset reviews to default initial customer feedback?')) {
+        adminFeedbacks = resetFeedbackToDefault();
+        renderAdminFeedbackTable();
+        alert('Feedback reviews reset to default.');
+      }
+    }
+
+    function openAdminAddFeedbackModal() {
+      document.getElementById('admin-feedback-form').reset();
+      toggleAdminFeedbackFields();
+      document.getElementById('admin-feedback-modal').classList.add('open');
+    }
+
+    function closeAdminFeedbackModal() {
+      document.getElementById('admin-feedback-modal').classList.remove('open');
+    }
+
+    function toggleAdminFeedbackFields() {
+      const type = document.getElementById('afb-type').value;
+      const vFields = document.getElementById('afb-video-fields');
+      const sFields = document.getElementById('afb-story-fields');
+
+      if (type === 'video') {
+        vFields.style.display = 'block';
+        sFields.style.display = 'none';
+      } else if (type === 'story') {
+        vFields.style.display = 'none';
+        sFields.style.display = 'block';
+      } else {
+        vFields.style.display = 'none';
+        sFields.style.display = 'none';
+      }
+    }
+
+    function handleAdminAddFeedbackSubmit(e) {
+      e.preventDefault();
+      const type = document.getElementById('afb-type').value;
+      const name = document.getElementById('afb-name').value.trim();
+      const location = document.getElementById('afb-location').value.trim();
+      const saree = document.getElementById('afb-saree').value.trim();
+      const rating = parseInt(document.getElementById('afb-rating').value, 10);
+      const title = document.getElementById('afb-title').value.trim();
+      const quote = document.getElementById('afb-quote').value.trim();
+
+      const newItem = {
+        id: 'fb-adm-' + Date.now(),
+        type: type,
+        customerName: name,
+        location: location,
+        sareePurchased: saree,
+        rating: rating,
+        title: title,
+        quote: quote,
+        verified: 'Verified Customer',
+        isUserSubmitted: true,
+        date: 'Today'
+      };
+
+      if (type === 'video') {
+        newItem.videoUrl = document.getElementById('afb-video-url').value.trim() || 'https://www.youtube.com/embed/oH8tSjSnpdU';
+        newItem.poster = 'assets/images/hero-saree.jpg';
+      } else if (type === 'story') {
+        newItem.occasion = document.getElementById('afb-occasion').value.trim() || 'Special Event';
+        newItem.photo = document.getElementById('afb-photo-url').value.trim() || 'assets/images/hero-saree.jpg';
+      }
+
+      adminFeedbacks.unshift(newItem);
+      saveFeedbackToStorage(adminFeedbacks);
+      renderAdminFeedbackTable();
+      closeAdminFeedbackModal();
+      alert('New customer feedback added to live website successfully!');
+    }
+
+    // ==========================================
+    // PASSWORD MANAGEMENT
+    // ==========================================
+    function openChangePasswordModal() {
+      document.getElementById('change-pwd-form').reset();
+      document.getElementById('pwd-change-error').style.display = 'none';
+      document.getElementById('change-password-modal').classList.add('open');
+    }
+
+    function closeChangePasswordModal() {
+      document.getElementById('change-password-modal').classList.remove('open');
+    }
+
+    function handlePasswordChange(e) {
+      e.preventDefault();
+      const current = document.getElementById('pwd-current').value.trim();
+      const newUser = document.getElementById('pwd-new-username').value.trim();
+      const newPass = document.getElementById('pwd-new-password').value.trim();
+      const confirmPass = document.getElementById('pwd-confirm-password').value.trim();
+      const errEl = document.getElementById('pwd-change-error');
+
+      const creds = getAdminCredentials();
+
+      if (current !== creds.password) {
+        errEl.textContent = '❌ Incorrect current password.';
+        errEl.style.display = 'block';
+        return;
+      }
+
+      if (newPass.length < 6) {
+        errEl.textContent = '❌ New password must be at least 6 characters.';
+        errEl.style.display = 'block';
+        return;
+      }
+
+      if (newPass !== confirmPass) {
+        errEl.textContent = '❌ New passwords do not match.';
+        errEl.style.display = 'block';
+        return;
+      }
+
+      const updatedUser = newUser || creds.username;
+      saveAdminCredentials(updatedUser, newPass);
+      document.getElementById('admin-display-username').textContent = updatedUser;
+      closeChangePasswordModal();
+      alert('Password updated successfully! Please remember your new credentials.');
+    }
+
+    function escapeHtml(text) {
+      if (!text) return '';
+      return text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+    }
+  </script>
+</body>
+</html>
